@@ -43,6 +43,12 @@
       line-height: 1.6;
     }
 
+    #signature {
+      margin-top: 3rem;
+      color: #aaa;
+      font-size: 0.9rem;
+    }
+
     button {
       margin-top: 2rem;
       padding: 0.8rem 1.5rem;
@@ -76,14 +82,21 @@
 </head>
 <body>
   <div class="content">
-    <h1>Uzayın Bugünkü Hali 🌌</h1>
-    <img id="apodImage" src="" alt="NASA Astronomy Picture">
+    <h1>Bugünün Uzay Fotoğrafı 🌌</h1>
+    <img id="apodImage" src="" alt="NASA Uzay Fotoğrafı">
     <h2 id="apodTitle"></h2>
     <p id="apodExplanation"></p>
-    <button onclick="loadRandomApod()">Başka Bir Gün Göster 🔄</button>
+    <button onclick="toggleExplanation()" id="toggleBtn" style="display:none">Devamını Göster</button>
+    <br>
+    <button onclick="loadRandomApod()">Rastgele Başka Bir Gün 📅</button>
+    <div id="signature">Hazırlayan: Bengü Can</div>
   </div>
 
   <script>
+    let fullText = "";
+    let shortText = "";
+    let isExpanded = false;
+
     function getRandomDate() {
       const start = new Date(2015, 0, 1);
       const end = new Date();
@@ -104,11 +117,18 @@
         .then(data => {
           document.getElementById("apodImage").src = data.url;
           document.getElementById("apodTitle").textContent = data.title;
-          document.getElementById("apodExplanation").textContent = data.explanation;
+
+          fullText = data.explanation;
+          shortText = fullText.split('. ').slice(0, 2).join('. ') + '.';
+
+          document.getElementById("apodExplanation").textContent = shortText;
+          document.getElementById("toggleBtn").style.display = "inline-block";
+          isExpanded = false;
+          document.getElementById("toggleBtn").textContent = "Devamını Göster";
         })
         .catch(err => {
           console.error("Hata:", err);
-          alert("Fotoğraf yüklenemedi. Başka bir gün deneyin.");
+          alert("Veri alınamadı. Lütfen tekrar deneyin.");
         });
     }
 
@@ -117,8 +137,22 @@
       loadApod(randomDate);
     }
 
+    function toggleExplanation() {
+      const para = document.getElementById("apodExplanation");
+      const btn = document.getElementById("toggleBtn");
+      if (isExpanded) {
+        para.textContent = shortText;
+        btn.textContent = "Devamını Göster";
+      } else {
+        para.textContent = fullText;
+        btn.textContent = "Kısalt";
+      }
+      isExpanded = !isExpanded;
+    }
+
     loadApod();
   </script>
 </body>
 </html>
+
 
