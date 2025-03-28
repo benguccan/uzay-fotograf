@@ -1,1 +1,124 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Uzayın Bugünkü Hali 🚀</title>
+  <style>
+    body {
+      background-color: #0e0e0e;
+      color: #f1f1f1;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 2rem;
+      text-align: center;
+    }
+
+    h1 {
+      color: #58a6ff;
+      margin-bottom: 1rem;
+    }
+
+    #apodImage {
+      max-width: 100%;
+      height: auto;
+      border-radius: 20px;
+      box-shadow: 0 0 20px #0077ff77;
+      transition: transform 0.3s ease;
+      margin-top: 1rem;
+    }
+
+    #apodImage:hover {
+      transform: scale(1.02);
+    }
+
+    .content {
+      max-width: 800px;
+      margin: auto;
+    }
+
+    #apodExplanation {
+      margin-top: 1rem;
+      text-align: justify;
+      line-height: 1.6;
+    }
+
+    button {
+      margin-top: 2rem;
+      padding: 0.8rem 1.5rem;
+      background-color: #0077ff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #005fcc;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 1rem;
+      }
+
+      h1 {
+        font-size: 1.4rem;
+      }
+
+      button {
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="content">
+    <h1>Uzayın Bugünkü Hali 🌌</h1>
+    <img id="apodImage" src="" alt="NASA Astronomy Picture">
+    <h2 id="apodTitle"></h2>
+    <p id="apodExplanation"></p>
+    <button onclick="loadRandomApod()">Başka Bir Gün Göster 🔄</button>
+  </div>
+
+  <script>
+    function getRandomDate() {
+      const start = new Date(2015, 0, 1);
+      const end = new Date();
+      const date = new Date(start.getTime() + Math.random() * (end.getTime() - start.getTime()));
+      const yyyy = date.getFullYear();
+      const mm = String(date.getMonth() + 1).padStart(2, '0');
+      const dd = String(date.getDate()).padStart(2, '0');
+      return `${yyyy}-${mm}-${dd}`;
+    }
+
+    function loadApod(date = '') {
+      const baseURL = "https://api.nasa.gov/planetary/apod";
+      const key = "DEMO_KEY";
+      const url = `${baseURL}?api_key=${key}${date ? `&date=${date}` : ''}`;
+
+      fetch(url)
+        .then(res => res.json())
+        .then(data => {
+          document.getElementById("apodImage").src = data.url;
+          document.getElementById("apodTitle").textContent = data.title;
+          document.getElementById("apodExplanation").textContent = data.explanation;
+        })
+        .catch(err => {
+          console.error("Hata:", err);
+          alert("Fotoğraf yüklenemedi. Başka bir gün deneyin.");
+        });
+    }
+
+    function loadRandomApod() {
+      const randomDate = getRandomDate();
+      loadApod(randomDate);
+    }
+
+    loadApod();
+  </script>
+</body>
+</html>
 
