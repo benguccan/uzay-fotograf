@@ -88,7 +88,7 @@
     <p id="apodExplanation"></p>
     <button onclick="toggleExplanation()" id="toggleBtn" style="display:none">Devamını Göster</button>
     <br>
-    <button onclick="loadRandomApod()">Rastgele Başka Bir Gün 📅</button>
+    <button onclick="loadRandomApod()">Başka Bir Gün Göster 🔄</button>
     <div id="signature">Hazırlayan: Bengü Can</div>
   </div>
 
@@ -128,7 +128,7 @@
         })
         .catch(err => {
           console.error("Hata:", err);
-          alert("Veri alınamadı. Lütfen tekrar deneyin.");
+          alert("Fotoğraf yüklenemedi. Lütfen tekrar deneyin.");
         });
     }
 
